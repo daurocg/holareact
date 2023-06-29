@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/d5eba129-2cba-4dbf-943b-f599dffbc1a8/resourceGroups/quizzfuntionscertificati/providers/Microsoft.Web/sites/HolaReact",
+    "appService.deploySubpath": "."
+}
