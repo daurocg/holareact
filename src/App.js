@@ -3,7 +3,7 @@ import React from 'react';
 function App() {
   return (
     <div className="App">
-      <h1>Hola Mundo</h1>
+      <h1>Hola Mundo (  vercion react XD  )</h1>
     </div>
   );
 }
