@@ -30,6 +30,7 @@ function App() {
     setQuestionData(data);
     setQuestionStart(data[0].pregunta[0].orden);
  
+     
     
   };
 
