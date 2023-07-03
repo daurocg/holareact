@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function ConfirmationScreen({ module }) {
+function ConfirmationScreen({ module, onConfirm }) {
   const [selectedQuestion, setSelectedQuestion] = useState(1);
 
   const handleInputChange = (event) => {
@@ -8,7 +8,13 @@ function ConfirmationScreen({ module }) {
   };
 
   const handleButtonClick = () => {
-    console.log(`Comenzar con la pregunta ${selectedQuestion}`);
+    // Llamada a la API
+    fetch(`https://quizzfuntionscertifications.azurewebsites.net/api/getlista_preguntas?modulo=${encodeURIComponent(module.modulo)}&inicio=${selectedQuestion}&cantidad=3`)
+      .then(response => response.json())
+      .then(data => {
+        // Cuando obtenga la respuesta de la API, pasamos los datos a la función onConfirm
+        onConfirm(data);
+      });
   };
 
   const handleKeyDown = (event) => {

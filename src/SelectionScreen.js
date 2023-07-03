@@ -25,5 +25,6 @@ function SelectionScreen({ onModuleSelect }) {
     </select>
   );
 }
+console.log(typeof onModuleSelect); // esto también debería imprimir 'function'
 
 export default SelectionScreen;
