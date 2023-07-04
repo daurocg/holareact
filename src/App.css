@@ -22,7 +22,16 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+
 }
+.appScreen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 20px; /* margen izquierdo */
+  margin-right: 20px; /* margen derecho */
+}
+
 
 .App-link {
   color: #61dafb;

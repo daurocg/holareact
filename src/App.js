@@ -5,6 +5,8 @@ import axios from 'axios';
 import SelectionScreen from './SelectionScreen';
 import ConfirmationScreen from './ConfirmationScreen';
 import QuestionScreen from './QuestionScreen';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
   const [selectedModule, setSelectedModule] = useState(null);
@@ -43,8 +45,8 @@ function App() {
 
 
   return (
-    <div>
-      <h1>Quizz Certificaciones</h1>
+    <div className="container mt-4">
+      <h1 className="text-center mb-4">Quizz Certificaciones</h1>
       {questionData ? 
         <QuestionScreen questionData={questionData} fetchQuestions={fetchQuestions} maxQuestionCount={maxQuestionCount}  reset={reset} questionStart={questionStart}/> :
         selectedModule ?

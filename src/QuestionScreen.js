@@ -1,6 +1,7 @@
 // QuestionScreen.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 
 function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset ,questionStart}) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -14,14 +15,14 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
     setCorrection(response.data);
   };
   
-  const handleNextClick = () => {
+  const handleNextClick =async  () => {
     setCorrection(null);
     if (currentQuestionIndex + 1 < questionData.length) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setLocalquestionIndex(localquestionIndex + 1);
 
     } else if (questionData.length < maxQuestionCount) {
-      fetchQuestions();
+      await fetchQuestions();
       setCurrentQuestionIndex(0);
       setLocalquestionIndex(localquestionIndex + 1);
 
@@ -32,19 +33,20 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
 
   // Comprobar si estamos en la última pregunta
   const isLastQuestion = localquestionIndex === maxQuestionCount;
-  console.log('localquestionIndex:', localquestionIndex);
-  console.log('maxQuestionCount:', maxQuestionCount);
-  console.log('isLastQuestion:', isLastQuestion);
 
   return (  
-    <div>
-      <h2>{question.pregunta[0].orden}: {question.pregunta[0].descripcion_pregunta}</h2>
-      {question.respuestas.map((respuesta, index) => (
-        <button key={index} onClick={() => handleAnswerClick(respuesta.id)}>{respuesta.descripcion}</button>
-      ))}
-      {correction && <p>{correction}</p>}
-      {!isLastQuestion && <button onClick={handleNextClick}>Siguiente</button>}
-      <button onClick={reset}>Inicio</button>
+    <div className="container my-3">  {/* Agregamos un contenedor con margen */}
+      <h2 className="my-3">{question.pregunta[0].orden}: {question.pregunta[0].descripcion_pregunta}</h2>
+      <div className="list-group">
+        {question.respuestas.map((respuesta, index) => (
+          <button key={index} className="list-group-item list-group-item-action" onClick={() => handleAnswerClick(respuesta.id)}>{respuesta.descripcion}</button>
+        ))}
+      </div>
+      {correction && <div className="alert alert-info mt-3">{correction}</div>}
+      <div className="mt-3">
+        {!isLastQuestion && <button className="btn btn-primary mr-2" onClick={handleNextClick}>Siguiente</button>}
+        <button className="btn btn-secondary" onClick={reset}>Inicio</button>
+      </div>
     </div>
   );
 }
