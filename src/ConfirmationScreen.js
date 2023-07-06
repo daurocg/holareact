@@ -10,7 +10,7 @@ function ConfirmationScreen({ module, onConfirm }) {
 
   const handleButtonClick = () => {
     // Llamada a la API
-    fetch(`https://quizzfuntionscertifications.azurewebsites.net/api/getlista_preguntas?modulo=${encodeURIComponent(module.modulo)}&inicio=${selectedQuestion}&cantidad=3`)
+    fetch(`https://quizzfuntionscertifications.azurewebsites.net/api/getlista_preguntas?modulo=${encodeURIComponent(module.modulo)}&inicio=${selectedQuestion}&cantidad=20`)
       .then(response => response.json())
       .then(data => {
         // Cuando obtenga la respuesta de la API, pasamos los datos a la función onConfirm

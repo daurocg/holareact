@@ -28,3 +28,20 @@
   gap: 10px;
  
 }
+.bg-success-soft {
+  background-color: #d4edda !important; /* Un verde más suave */
+}
+
+.bg-danger-soft {
+  background-color: #f8d7da !important; /* Un rojo más suave */
+}
+
+@keyframes blink {
+  0%   {background-color: #d4edda;}
+  50%  {background-color: transparent;}
+  100% {background-color: #d4edda;}
+}
+
+.blink {
+  animation: blink 1s linear infinite;
+}

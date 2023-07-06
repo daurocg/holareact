@@ -16,8 +16,8 @@ function App() {
 
   const fetchQuestions = async () => {
     setQuestionStart(prevQuestionStart => prevQuestionStart + 3);
-    const nextQuestionStart = questionStart + 3;
-    const response = await axios(`https://quizzfuntionscertifications.azurewebsites.net/api/getlista_preguntas?modulo=${selectedModule.modulo}&inicio=${nextQuestionStart}&cantidad=3`);
+    const nextQuestionStart = questionStart + 20;
+    const response = await axios(`https://quizzfuntionscertifications.azurewebsites.net/api/getlista_preguntas?modulo=${selectedModule.modulo}&inicio=${nextQuestionStart}&cantidad=20`);
     setQuestionData(response.data);
   };
   
