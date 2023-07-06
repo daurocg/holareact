@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import './QuestionScreen.css';
@@ -103,7 +103,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
           >
             {respuesta.descripcion}
           </button>
-          
+
         ))}
       </div>
       <div className="mt-3">
