@@ -97,6 +97,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
               ${answeredQuestions[currentQuestionIndex] && selectedAnswersIndex[currentQuestionIndex] !== index && respuesta.respuesta_correcta ? 'blink' : ''}
             `} 
             
+
             onClick={() => handleAnswerClick(respuesta.id, index)} 
             disabled={answeredQuestions[currentQuestionIndex] || loadingQuestions[currentQuestionIndex]}  // Deshabilita el botón si la pregunta ya ha sido respondida o está cargando
           >
