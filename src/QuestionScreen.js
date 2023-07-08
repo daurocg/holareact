@@ -5,7 +5,7 @@ import './QuestionScreen.css';
 
 function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset ,questionStart}) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [corrections, setCorrections] = useState([]);
+  const [corrections, setCorrections] = useState({});
   const [localquestionIndex, setLocalquestionIndex] = useState(questionStart);
   const [loadingQuestions, setLoadingQuestions] = useState({});  // Cambio aquí: ahora es un objeto
   // NUEVO ESTADO
@@ -31,7 +31,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
   
       try {
         const response = await axios(`https://quizzfuntionscertifications.azurewebsites.net/api/getcorrecion_pregunta?id_pregunta=${question.pregunta[0].id_pregunta}&id_respuesta=${answerId}`);
-        setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: response.data }));
+        setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: response.data.respuesta }));
         setErrorMessage(null);  // Limpiar el mensaje de error si la llamada a la API fue exitosa
       } catch (error) {
         setErrorMessage('Falló la conexión con el backend. ¿Reintentar?');
@@ -64,9 +64,18 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
     // Comprueba si la pregunta actual ha sido respondida antes de intentar hacer la llamada a la API
     if (answeredQuestions[currentQuestionIndex]) {
       setLoadingQuestions(prev => ({ ...prev, [currentQuestionIndex]: true }));  // Establecemos el valor de la pregunta actual en true
+  
       try {
-        const response = await axios(`https://quizzfuntionscertifications.azurewebsites.net/api/getcorrecion_pregunta?id_pregunta=${question.pregunta[0].id_pregunta}&id_respuesta=${question.respuestas[selectedAnswersIndex[currentQuestionIndex]].id}`);
-        setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: response.data }));
+        const answerId = question.respuestas[selectedAnswersIndex[currentQuestionIndex]].id;
+        const response = await axios.get(`https://quizzfuntionscertifications.azurewebsites.net/api/getcorrecion_pregunta`, {
+          params: {
+            id_pregunta: question.pregunta[0].id_pregunta,
+            id_respuesta: answerId
+          }
+        });
+  
+        const { respuesta } = response.data;
+        setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: respuesta }));
         setErrorMessage(null);  // Limpiar el mensaje de error si la llamada a la API fue exitosa
       } catch (error) {
         setErrorMessage('Falló la conexión con el backend. ¿Reintentar?');
@@ -75,7 +84,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
       }
     }
   };
-  
+    
   
   // Comprobar si estamos en la última pregunta
   const isLastQuestion = localquestionIndex === maxQuestionCount;
