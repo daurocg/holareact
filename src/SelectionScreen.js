@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 
-function SelectionScreen({ onModuleSelect }) {
+
+function SelectionScreen({ onModuleSelect,language  }) {
   const [modules, setModules] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios('https://quizzfuntionscertifications.azurewebsites.net/api/getmodulosnumpregunta');
+      const result = await axios(`https://quizzfuntionscertifications.azurewebsites.net/api/getmodulosnumpregunta?languaje=${language}`);
       setModules(result.data);
     }
 
     fetchData();
-  }, []);
+  }, [language]);
 
   const handleChange = event => {
     const selectedModule = modules.find(module => module.modulo === event.target.value);

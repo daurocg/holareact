@@ -7,12 +7,47 @@ import ConfirmationScreen from './ConfirmationScreen';
 import QuestionScreen from './QuestionScreen';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import enTranslations from './locales/en/translation.json';
+import esTranslations from './locales/esp/translation.json';
+import { useTranslation } from 'react-i18next';
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: enTranslations
+      },
+      esp: {
+        translation: esTranslations
+      }
+    },
+    lng: 'esp', // El idioma que desees por defecto
+    fallbackLng: 'esp',
+    interpolation: {
+      escapeValue: false
+    }
+  });
+
 
 function App() {
+  const [language, setLanguage] = useState("esp");
+  const { t } = useTranslation();
   const [selectedModule, setSelectedModule] = useState(null);
   const [questionData, setQuestionData] = useState(null);
   const [questionStart, setQuestionStart] = useState(1);
   const [maxQuestionCount, setMaxQuestionCount] = useState(0);
+  
+  const handleLanguageChange = (event) => {
+    i18n.changeLanguage(event.target.value);
+        // Actualiza el valor del estado language
+        setLanguage(event.target.value);
+  };
+
+  const handleHelpLanguageChange = (event) => {
+    // Por ahora no haremos nada con este valor, pero puedes usarlo de la misma forma que el selector de idioma general
+  };
 
   const fetchQuestions = async () => {
     setQuestionStart(prevQuestionStart => prevQuestionStart + 3);
@@ -45,15 +80,35 @@ function App() {
 
 
   return (
+    <div className="App">
     <div className="container mt-4">
       <h1 className="text-center mb-4">Quizz Certificaciones</h1>
       {questionData ? 
-        <QuestionScreen questionData={questionData} fetchQuestions={fetchQuestions} maxQuestionCount={maxQuestionCount}  reset={reset} questionStart={questionStart}/> :
+        <QuestionScreen questionData={questionData} fetchQuestions={fetchQuestions} maxQuestionCount={maxQuestionCount}  reset={reset} questionStart={questionStart}language={language}/> :
         selectedModule ?
-          <ConfirmationScreen module={selectedModule} onConfirm={handleConfirmation} /> :
-          <SelectionScreen onModuleSelect={handleModuleSelect} />
+          <ConfirmationScreen module={selectedModule} onConfirm={handleConfirmation}language={language} /> :
+          <SelectionScreen onModuleSelect={handleModuleSelect}language={language} />
       }
     </div>
+    {/* Agregamos los selectores de idioma en la parte inferior de la página */}
+    <div style={{ position: 'fixed', bottom: '0', width: '100%', padding: '10px', background: '#f5f5f5' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <label style={{ marginRight: '10px' }}>{t('languageSelector')}:</label>
+        <select onChange={handleLanguageChange}>
+          <option value="esp">ESP</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px' }}>
+        <label style={{ marginRight: '10px' }}>{t('helpLanguageSelector')}:</label>
+        <select onChange={handleHelpLanguageChange}>
+          <option value="es">ESP</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+  </div>
   );
 }
 

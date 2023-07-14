@@ -3,7 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import './QuestionScreen.css';
 
-function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset ,questionStart}) {
+function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset ,questionStart,language}) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [corrections, setCorrections] = useState({});
   const [localquestionIndex, setLocalquestionIndex] = useState(questionStart);
