@@ -4,6 +4,24 @@
     "questions": "preguntas",
     "selectQuestion": "Selecciona la pregunta para empezar",
     "begin": "Comenzar",
+    "back":"Volver",
     "languageSelector": "Lenguaje de preguntas",
-    "helpLanguageSelector": "Lenguaje de ayuda"
+    "helpLanguageSelector": "Lenguaje de ayuda",
+    "loading": "Cargando...",
+    "pleaseSelectModule": "Por favor selecciona un módulo:",
+    "pleaseSelect": "--Por favor selecciona--",
+    "buttons": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "reset": "Inicio",
+      "recallOpenAI": "Recall OpenAI",
+      "helpWithQuestion": "Ayuda con pregunta"
+    },
+    "alerts": {
+      "loading": "Cargando...",
+      "comingSoon": "Proximamente..."
+    },
+    "questionOrder": "Orden",
+    "Respuesta correcta": "Respuesta correcta",
+    "Respuesta incorrecta": "Respuesta incorrecta, un momento conectando con OpenAI..."
   }

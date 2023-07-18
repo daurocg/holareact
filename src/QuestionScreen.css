@@ -46,3 +46,12 @@
 .blink {
   animation: blink 1s linear infinite;
 }
+
+.row {
+  display: flex;
+}
+
+.help-panel {
+  width: 40%;
+  /* Otras propiedades del estilo del panel de ayuda... */
+}

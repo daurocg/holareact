@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
+import { useTranslation } from 'react-i18next'; // Importa useTranslation
 
 
 function SelectionScreen({ onModuleSelect,language  }) {
   const [modules, setModules] = useState([]);
+  const { t } = useTranslation(); // Obtén la función de traducción
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,14 +22,14 @@ function SelectionScreen({ onModuleSelect,language  }) {
     onModuleSelect(selectedModule);
   };
 if (modules.length === 0) {
-  return <p>Cargando...</p>;
+  return <p>{t('loading')}</p>; // Usa la función de traducción
 }
 
 return (
   <div className="form-group">
-    <label>Por favor selecciona un módulo:</label>
+      <label>{t('pleaseSelectModule')}</label>
     <select className="form-control" onChange={handleChange}>
-      <option value="">--Por favor selecciona--</option>
+    <option value="">{t('pleaseSelect')}</option>
       {modules.map((module, index) => <option key={index} value={module.modulo}>{module.modulo}</option>)}
     </select>
   </div>

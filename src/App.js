@@ -33,6 +33,8 @@ i18n
 
 function App() {
   const [language, setLanguage] = useState("esp");
+  const [IAlanguage, setIALanguage] = useState("esp");
+
   const { t } = useTranslation();
   const [selectedModule, setSelectedModule] = useState(null);
   const [questionData, setQuestionData] = useState(null);
@@ -46,8 +48,8 @@ function App() {
   };
 
   const handleHelpLanguageChange = (event) => {
-    // Por ahora no haremos nada con este valor, pero puedes usarlo de la misma forma que el selector de idioma general
-  };
+    setIALanguage(event.target.value);
+    };
 
   const fetchQuestions = async () => {
     setQuestionStart(prevQuestionStart => prevQuestionStart + 3);
@@ -78,23 +80,24 @@ function App() {
     setMaxQuestionCount(null);
   };
 
-
   return (
     <div className="App">
-    <div className="container mt-4">
+    {/* Agregamos un padding en la parte inferior del contenedor principal */}
+    <div className="container mt-4" style={{ paddingBottom: '100px' }}> 
       <h1 className="text-center mb-4">Quizz Certificaciones</h1>
       {questionData ? 
-        <QuestionScreen questionData={questionData} fetchQuestions={fetchQuestions} maxQuestionCount={maxQuestionCount}  reset={reset} questionStart={questionStart}language={language}/> :
+        <QuestionScreen questionData={questionData} fetchQuestions={fetchQuestions} maxQuestionCount={maxQuestionCount}  reset={reset} questionStart={questionStart}language={language}IAlanguage={IAlanguage}/> :
         selectedModule ?
-          <ConfirmationScreen module={selectedModule} onConfirm={handleConfirmation}language={language} /> :
+          <ConfirmationScreen module={selectedModule} onConfirm={handleConfirmation}language={language}reset={reset} /> :
           <SelectionScreen onModuleSelect={handleModuleSelect}language={language} />
       }
     </div>
     {/* Agregamos los selectores de idioma en la parte inferior de la página */}
+    {(!questionData && !selectedModule) &&
     <div style={{ position: 'fixed', bottom: '0', width: '100%', padding: '10px', background: '#f5f5f5' }}>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <label style={{ marginRight: '10px' }}>{t('languageSelector')}:</label>
-        <select onChange={handleLanguageChange}>
+        <select onChange={handleLanguageChange} value={language}>
           <option value="esp">ESP</option>
           <option value="en">EN</option>
         </select>
@@ -102,14 +105,18 @@ function App() {
 
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px' }}>
         <label style={{ marginRight: '10px' }}>{t('helpLanguageSelector')}:</label>
-        <select onChange={handleHelpLanguageChange}>
-          <option value="es">ESP</option>
+        <select onChange={handleHelpLanguageChange}value={IAlanguage} >
+          <option value="esp">ESP</option>
           <option value="en">EN</option>
         </select>
       </div>
     </div>
+    }
   </div>
   );
+
+
+
 }
 
 export default App;

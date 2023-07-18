@@ -5,7 +5,26 @@
     "questions": "questions",
     "selectQuestion": "Select the question to start",
     "begin": "Begin",
+    "back":"Back",
     "languageSelector": "Question Language",
-    "helpLanguageSelector": "Help Language"
+    "helpLanguageSelector": "Help Language",
+    "loading": "Loading...",
+    "pleaseSelectModule": "Please select a module:",
+    "pleaseSelect": "--Please select--",
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "reset": "Home",
+      "recallOpenAI": "Recall OpenAI",
+      "helpWithQuestion": "Help with question"
+    },
+    "alerts": {
+      "loading": "Loading...",
+      "comingSoon": "Coming soon..."
+    },
+    "questionOrder": "Order",
+    "Respuesta correcta": "Correct Answer",
+    "Respuesta incorrecta": "Incorrect answer, connecting with OpenAI in a moment..."
+  
   }
   
