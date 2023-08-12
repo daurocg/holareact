@@ -81,7 +81,8 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
         const response = await axios.get(`https://quizzfuntionscertifications.azurewebsites.net/api/getcorrecion_pregunta`, {
           params: {
             id_pregunta: question.pregunta[0].id_pregunta,
-            id_respuesta: answerId
+            id_respuesta: answerId,
+            language: IAlanguage
           }
         });
   

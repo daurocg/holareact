@@ -30,7 +30,7 @@ return (
       <label>{t('pleaseSelectModule')}</label>
     <select className="form-control" onChange={handleChange}>
     <option value="">{t('pleaseSelect')}</option>
-      {modules.map((module, index) => <option key={index} value={module.modulo} >{module.modulo} ( {module.preguntas} preguntas )</option>)}
+      {modules.map((module, index) => <option key={index} value={module.modulo} >{module.modulo} ( {module.preguntas} {t('questions')} )</option>)}
     </select>
   </div>
 );
