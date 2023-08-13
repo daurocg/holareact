@@ -8,7 +8,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [corrections, setCorrections] = useState({});
   //const [localquestionIndex, setLocalquestionIndex] = useState(questionStart);
-  const [loadingQuestions, setLoadingQuestions] = useState({});  // Cambio aquí: ahora es un objeto
+  //const [loadingQuestions, setLoadingQuestions] = useState({});  // Cambio aquí: ahora es un objeto
   // NUEVO ESTADO
   const [answeredQuestions, setAnsweredQuestions] = useState({});
   const [selectedAnswersIndex, setSelectedAnswersIndex] = useState({});
@@ -187,7 +187,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
 
 
                   onClick={() => handleAnswerClick(respuesta.id, index)} 
-                  disabled={answeredQuestions[currentQuestionIndex] || loadingQuestions[currentQuestionIndex]}  // Deshabilita el botón si la pregunta ya ha sido respondida o está cargando
+                  disabled={answeredQuestions[currentQuestionIndex] || loading}  // Deshabilita el botón si la pregunta ya ha sido respondida o está cargando
                 >
                   {respuesta.descripcion}
                 </button>
