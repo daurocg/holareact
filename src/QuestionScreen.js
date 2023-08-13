@@ -7,14 +7,14 @@ import { useTranslation } from 'react-i18next';
 function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset ,questionStart,language,IAlanguage}) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [corrections, setCorrections] = useState({});
-  const [localquestionIndex, setLocalquestionIndex] = useState(questionStart);
+  //const [localquestionIndex, setLocalquestionIndex] = useState(questionStart);
   const [loadingQuestions, setLoadingQuestions] = useState({});  // Cambio aquí: ahora es un objeto
   // NUEVO ESTADO
   const [answeredQuestions, setAnsweredQuestions] = useState({});
   const [selectedAnswersIndex, setSelectedAnswersIndex] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [helpPanelVisible, setHelpPanelVisible] = useState(false);
-  const [helpText, setHelpText] = useState(null);
+  //const [helpText, setHelpText] = useState(null);
   const [loading, setLoading] = useState(false);
   const [helpTexts, setHelpTexts] = useState({});
   const [loadingrespuesta, setloadingrespuesta] = useState(false);
@@ -93,7 +93,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
 
     if (nextQuestionIndex + 1 < questionData.length) {
       setCurrentQuestionIndex(nextQuestionIndex);
-      setLocalquestionIndex(nextQuestionIndex);
+      //setLocalquestionIndex(nextQuestionIndex);
       if (helpTexts[nextQuestionIndex] ){
         setHelpPanelVisible(true);
   
@@ -101,11 +101,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
         setHelpPanelVisible(false);
   
       }
-    } else if (questionData.length < maxQuestionCount) {
-      await fetchQuestions();
-      setCurrentQuestionIndex(0);
-      setLocalquestionIndex(nextQuestionIndex);
-    }  
+    } 
 
   };
 
@@ -114,7 +110,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
 
     if (nextQuestionIndex >= 0) {
       setCurrentQuestionIndex(nextQuestionIndex);
-      setLocalquestionIndex(nextQuestionIndex);
+      //setLocalquestionIndex(nextQuestionIndex);
       if (helpTexts[nextQuestionIndex] ){
         setHelpPanelVisible(true);
   
@@ -158,10 +154,10 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
 
   
   // Comprobar si estamos en la última pregunta
-  const isLastQuestion = localquestionIndex === maxQuestionCount;
+  //const isLastQuestion = localquestionIndex === maxQuestionCount;
 
   // Comprobar si estamos en la primera pregunta
-  const isFirstQuestion = localquestionIndex === 1;
+  //const isFirstQuestion = localquestionIndex === 1;
 
   return (
     <div className="container my-3">
