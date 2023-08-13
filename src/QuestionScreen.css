@@ -1,8 +1,6 @@
 
 
-.questionScreen__header {
-  /* Aplica los estilos que necesites para el encabezado aquí */
-}
+
 
 .questionScreen__answers {
   display: flex;
@@ -11,13 +9,6 @@
 } 
 
 
-.questionScreen__answerButton {
-  /* Aplica los estilos que necesites para los botones de respuestas aquí */
-}
-
-.questionScreen__correction {
-  /* Aplica los estilos que necesites para la corrección aquí */
-}
 
 .questionScreen__buttons {
   display: flex;
