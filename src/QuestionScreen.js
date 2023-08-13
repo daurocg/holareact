@@ -14,14 +14,47 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
   const [selectedAnswersIndex, setSelectedAnswersIndex] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [helpPanelVisible, setHelpPanelVisible] = useState(false);
+  const [helpText, setHelpText] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [helpTexts, setHelpTexts] = useState({});
+  const [loadingrespuesta, setloadingrespuesta] = useState(false);
+  const [loadingHelp, setLoadingHelp] = useState(false);
 
   const question = questionData[currentQuestionIndex];
   const { t } = useTranslation();
 
+  const handleHelpClick = async () => {
+    // Si ya hay un texto de ayuda guardado, simplemente activa o desactiva el panel de ayuda
+    if(helpTexts[currentQuestionIndex]) {
+      setHelpPanelVisible(!helpPanelVisible);
+      return;
+    }
+  
+    setHelpPanelVisible(true);
+    setLoading(true);
+    setLoadingHelp(true);
 
-  const handleHelpClick = () => {
-    setHelpPanelVisible(!helpPanelVisible); // Cambia el estado del panel de ayuda cada vez que se hace clic en el botón
+  
+    try {
+      const response = await axios.get(`https://quizzfuntionscertifications.azurewebsites.net/api/getHelp_pregunta`, {
+        params: {
+          id_pregunta: question.pregunta[0].id_pregunta,
+          language: IAlanguage
+        }
+      });
+      // Almacena el texto de ayuda en el estado
+      setHelpTexts(prev => ({ ...prev, [currentQuestionIndex]: response.data.respuesta }));
+  
+      setErrorMessage(null);
+    } catch (error) {
+      setErrorMessage('Falló la conexión con el backend al pedir ayuda. ¿Reintentar?');
+    } finally {
+      setLoading(false);
+      setLoadingHelp(false);
+
+    }
   };
+  
 
 
 
@@ -38,8 +71,8 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
     } else {
       // Si la respuesta es incorrecta, mostramos el mensaje de carga y hacemos la llamada a la API
       setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: t('Respuesta incorrecta') }));
-      setLoadingQuestions(prev => ({ ...prev, [currentQuestionIndex]: true }));  // Establecemos el valor de la pregunta actual en true
-  
+      setLoading(true);
+      setloadingrespuesta(true);
       try {
         const response = await axios(`https://quizzfuntionscertifications.azurewebsites.net/api/getcorrecion_pregunta?id_pregunta=${question.pregunta[0].id_pregunta}&id_respuesta=${answerId}&language=${IAlanguage}`)
         setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: response.data.respuesta }));
@@ -47,7 +80,8 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
       } catch (error) {
         setErrorMessage('Falló la conexión con el backend. ¿Reintentar?');
       } finally {
-        setLoadingQuestions(prev => ({ ...prev, [currentQuestionIndex]: false }));  // Establecemos el valor de la pregunta actual en false
+        setLoading(false);
+        setloadingrespuesta(false);
       }
     }
   };
@@ -55,27 +89,48 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
   
   
   const handleNextClick = async () => {
-    if (currentQuestionIndex + 1 < questionData.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setLocalquestionIndex(localquestionIndex + 1);
+    const nextQuestionIndex = currentQuestionIndex + 1;
+
+    if (nextQuestionIndex + 1 < questionData.length) {
+      setCurrentQuestionIndex(nextQuestionIndex);
+      setLocalquestionIndex(nextQuestionIndex);
+      if (helpTexts[nextQuestionIndex] ){
+        setHelpPanelVisible(true);
+  
+      }else {
+        setHelpPanelVisible(false);
+  
+      }
     } else if (questionData.length < maxQuestionCount) {
       await fetchQuestions();
       setCurrentQuestionIndex(0);
-      setLocalquestionIndex(localquestionIndex + 1);
+      setLocalquestionIndex(nextQuestionIndex);
     }  
+
   };
 
   const handlePrevClick = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setLocalquestionIndex(localquestionIndex - 1);
+    const nextQuestionIndex = currentQuestionIndex - 1;
+
+    if (nextQuestionIndex >= 0) {
+      setCurrentQuestionIndex(nextQuestionIndex);
+      setLocalquestionIndex(nextQuestionIndex);
+      if (helpTexts[nextQuestionIndex] ){
+        setHelpPanelVisible(true);
+  
+      }else {
+        setHelpPanelVisible(false);
+  
+      }
     }
+
   };
   const recallOpenAI = async () => {
     // Comprueba si la pregunta actual ha sido respondida antes de intentar hacer la llamada a la API
     if (answeredQuestions[currentQuestionIndex]) {
-      setLoadingQuestions(prev => ({ ...prev, [currentQuestionIndex]: true }));  // Establecemos el valor de la pregunta actual en true
-  
+      setLoading(true);
+      setloadingrespuesta(true);
+
       try {
         const answerId = question.respuestas[selectedAnswersIndex[currentQuestionIndex]].id;
         const response = await axios.get(`https://quizzfuntionscertifications.azurewebsites.net/api/getcorrecion_pregunta`, {
@@ -92,7 +147,9 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
       } catch (error) {
         setErrorMessage('Falló la conexión con el backend. ¿Reintentar?');
       } finally {
-        setLoadingQuestions(prev => ({ ...prev, [currentQuestionIndex]: false }));  // Establecemos el valor de la pregunta actual en false
+        setLoading(false);
+        setloadingrespuesta(false);
+
       }
     }
   };
@@ -110,11 +167,11 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
     <div className="container my-3">
     <div className="row">
             <div className="mt-3">
-              <button className="btn btn-primary m-2" onClick={handlePrevClick} disabled={loadingQuestions[currentQuestionIndex] || isFirstQuestion}>{t('buttons.previous')}</button>
-              <button className="btn btn-primary m-2" onClick={handleNextClick} disabled={loadingQuestions[currentQuestionIndex] || isLastQuestion}>{t('buttons.next')}</button>
+              <button className="btn btn-primary m-2" onClick={handlePrevClick} disabled={loading} >{t('buttons.previous')}</button>
+              <button className="btn btn-primary m-2" onClick={handleNextClick} disabled={loading} >{t('buttons.next')}</button>
               <button className="btn btn-secondary m-2" onClick={reset}>{t('buttons.reset')}</button>
-              <button className="btn btn-warning m-2" onClick={recallOpenAI} disabled={loadingQuestions[currentQuestionIndex]|| !corrections[currentQuestionIndex] || corrections[currentQuestionIndex].length === 0 }>{t('buttons.recallOpenAI')}</button>
-              <button className="btn btn-warning m-2" onClick={handleHelpClick} disabled={loadingQuestions[currentQuestionIndex]} >{t('buttons.helpWithQuestion')}</button>
+              <button className="btn btn-warning m-2" onClick={recallOpenAI} disabled={loading} >{t('buttons.recallOpenAI')}</button>
+              <button className="btn btn-warning m-2" onClick={handleHelpClick} disabled={loading}  >{t('buttons.helpWithQuestion')}</button>
                 {/* <button className="btn btn-warning m-2" onClick={helpresp} disabled={loadingQuestions[currentQuestionIndex] }>Ayuda con respuestas</button> */}
             </div>
       <div className={helpPanelVisible ? "col-md-8" : "col-md-12"}>
@@ -142,7 +199,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
             </div>
         
             {corrections[currentQuestionIndex] && <div className="alert alert-info mt-3">{corrections[currentQuestionIndex]}</div>}
-            {loadingQuestions[currentQuestionIndex] && 
+            {loadingrespuesta  && 
               <div className="alert alert-warning mt-3">
                 <img src="https://media.tenor.com/0JK1fHxqYGEAAAAi/loading.gif" alt="Loading..." style={{ width: '30px', marginRight: '10px' }} />  {t('alerts.loading')}
               </div>}
@@ -153,11 +210,18 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
         </div>
       </div>
       {helpPanelVisible && 
-
-        <div className="alert col m-3"style={{border: '1px solid #cce5ff', backgroundColor: '#e2f3ff', padding: '10px',margin: '25px'}}>
-            {t('alerts.comingSoon')}
+        <div className="alert col m-3" style={{border: '1px solid #cce5ff', backgroundColor: '#e2f3ff', padding: '10px', margin: '25px'}}>
+          {loadingHelp ? 
+            <div className="alert alert-warning mt-3">
+              <img src="https://media.tenor.com/0JK1fHxqYGEAAAAi/loading.gif" alt="Loading..." style={{ width: '30px', marginRight: '10px' }} />  
+              {t('alerts.loading')}
+            </div> 
+          :
+            helpTexts[currentQuestionIndex] || t('alerts.comingSoon') 
+          }
         </div>
-        }
+      }
+
 
     </div>
   </div>

@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "chrome",
+            "name": "http://currentQuestionIndex",
+            "request": "launch",
+            "url": "http://192.168.1.50:3001/"
+        }
+    ]
+}
