@@ -22,7 +22,9 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
 
   const question = questionData[currentQuestionIndex];
   const { t } = useTranslation();
-
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [remainingQuestions, setRemainingQuestions] = useState(maxQuestionCount);
+  
   const handleHelpClick = async () => {
     // Si ya hay un texto de ayuda guardado, simplemente activa o desactiva el panel de ayuda
     if(helpTexts[currentQuestionIndex]) {
@@ -61,13 +63,18 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
   const handleAnswerClick = async (answerId, index) => {
     setAnsweredQuestions(prev => ({ ...prev, [currentQuestionIndex]: true }));
     setSelectedAnswersIndex(prev => ({ ...prev, [currentQuestionIndex]: index }));  // Guardar el índice de la respuesta seleccionada
-  
+    setRemainingQuestions(prevRemaining => prevRemaining - 1);
+
     // Comprueba si la respuesta es correcta
     const answerIsCorrect = question.respuestas[index].respuesta_correcta;
   
     if (answerIsCorrect) {
       // Si la respuesta es correcta, establecemos la corrección de inmediato y evitamos hacer la llamada a la API
       setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: t('Respuesta correcta') }));
+
+        setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: t('Respuesta correcta') }));
+        setCorrectAnswers(prevCorrectAnswers => prevCorrectAnswers + 1);
+      
     } else {
       // Si la respuesta es incorrecta, mostramos el mensaje de carga y hacemos la llamada a la API
       setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: t('Respuesta incorrecta') }));
@@ -91,7 +98,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
   const handleNextClick = async () => {
     const nextQuestionIndex = currentQuestionIndex + 1;
 
-    if (nextQuestionIndex + 1 < questionData.length) {
+    if (nextQuestionIndex  < questionData.length) {
       setCurrentQuestionIndex(nextQuestionIndex);
       //setLocalquestionIndex(nextQuestionIndex);
       if (helpTexts[nextQuestionIndex] ){
@@ -170,6 +177,10 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
               <button className="btn btn-warning m-2" onClick={handleHelpClick} disabled={loading}  >{t('buttons.helpWithQuestion')}</button>
                 {/* <button className="btn btn-warning m-2" onClick={helpresp} disabled={loadingQuestions[currentQuestionIndex] }>Ayuda con respuestas</button> */}
             </div>
+            <div className="question-counter">
+              {t('questionsAnsweredCorrectly')} {correctAnswers} / {maxQuestionCount - remainingQuestions}
+            </div>
+
       <div className={helpPanelVisible ? "col-md-8" : "col-md-12"}>
         <div className="mt-3">
           <div className="container my-3">

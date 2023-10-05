@@ -5,6 +5,8 @@ import axios from 'axios';
 import SelectionScreen from './SelectionScreen';
 import ConfirmationScreen from './ConfirmationScreen';
 import QuestionScreen from './QuestionScreen';
+import AddQuestionScreen from './AddQuestionScreen';
+
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import i18n from 'i18next';
@@ -40,7 +42,8 @@ function App() {
   const [questionData, setQuestionData] = useState(null);
   const [questionStart, setQuestionStart] = useState(1);
   const [maxQuestionCount, setMaxQuestionCount] = useState(0);
-  
+  const [isAddQuestionScreenActive, setIsAddQuestionScreenActive] = useState(false);
+
   const handleLanguageChange = (event) => {
     i18n.changeLanguage(event.target.value);
         // Actualiza el valor del estado language
@@ -74,6 +77,7 @@ function App() {
   };
 
   const reset = () => {
+    setIsAddQuestionScreenActive(false)
     setSelectedModule(null);
     setQuestionData(null);
     setQuestionStart(null);
@@ -82,15 +86,24 @@ function App() {
 
   return (
     <div className="App">
-    {/* Agregamos un padding en la parte inferior del contenedor principal */}
-    <div className="container mt-4" style={{ paddingBottom: '100px' }}> 
+    <div className="container mt-4" style={{ paddingBottom: '100px' }}>
       <h1 className="text-center mb-4">Quizz Certificaciones</h1>
-      {questionData ? 
-        <QuestionScreen questionData={questionData} fetchQuestions={fetchQuestions} maxQuestionCount={maxQuestionCount}  reset={reset} questionStart={questionStart}language={language}IAlanguage={IAlanguage}/> :
-        selectedModule ?
-          <ConfirmationScreen module={selectedModule} onConfirm={handleConfirmation}language={language}reset={reset} /> :
-          <SelectionScreen onModuleSelect={handleModuleSelect}language={language} />
-      }
+      
+      {isAddQuestionScreenActive ? (
+        <AddQuestionScreen reset={reset} />
+      ) : questionData ? (
+        <QuestionScreen questionData={questionData} fetchQuestions={fetchQuestions} maxQuestionCount={maxQuestionCount}  reset={reset} questionStart={questionStart} language={language} IAlanguage={IAlanguage} />
+      ) : selectedModule ? (
+        <ConfirmationScreen module={selectedModule} onConfirm={handleConfirmation} language={language} reset={reset} />
+      ) : (
+        <>
+          <SelectionScreen onModuleSelect={handleModuleSelect} language={language} />
+          <button className="btn btn-primary m-2" onClick={() => setIsAddQuestionScreenActive(true)}>
+            Añadir preguntas
+          </button>
+        </>
+      )}
+      
     </div>
     {/* Agregamos los selectores de idioma en la parte inferior de la página */}
     {(!questionData && !selectedModule) &&

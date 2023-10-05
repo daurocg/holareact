@@ -1,0 +1,24 @@
+.sql-content {
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-line;
+    margin-bottom: 0.5;
+    
+    margin-top: 0.5;
+    line-height: 0.9;
+}
+
+
+.sql-keyword {
+    color: blue;
+    font-weight: bold;
+}
+
+.sql-textarea {
+    width: 100%; 
+    height: 300px;
+    font-family: 'Courier New', Courier, monospace; 
+    border: 1px solid #ccc;
+    padding: 10px;
+    white-space: pre; 
+    overflow: auto;
+}
