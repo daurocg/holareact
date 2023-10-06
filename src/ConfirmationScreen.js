@@ -9,8 +9,13 @@ function ConfirmationScreen({ module, onConfirm, language, reset }) {
   const { t } = useTranslation();
 
   const handleInputChange = (event) => {
-    setSelectedQuestion(event.target.value);
+    let value = parseInt(event.target.value, 10); // Aseguramos que el valor sea un número
+    if (value > module.preguntas) {
+      value = module.preguntas; // Si el valor es mayor que el máximo permitido, lo ajustamos
+    }
+    setSelectedQuestion(value); // Actualizamos el estado con el valor (ajustado si es necesario)
   };
+  
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);

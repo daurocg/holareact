@@ -23,7 +23,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
   const question = questionData[currentQuestionIndex];
   const { t } = useTranslation();
   const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [remainingQuestions, setRemainingQuestions] = useState(maxQuestionCount);
+  const [remainingQuestions, setRemainingQuestions] = useState(questionData.length);
   
   const handleHelpClick = async () => {
     // Si ya hay un texto de ayuda guardado, simplemente activa o desactiva el panel de ayuda
@@ -204,7 +204,10 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
                 </button>
               ))}
             </div>
-        
+            <div className="question-remaining-counter">
+                {t('questionsRemaining')} {remainingQuestions} / {questionData.length}
+            </div>
+
             {corrections[currentQuestionIndex] && <div className="alert alert-info mt-3">{corrections[currentQuestionIndex]}</div>}
             {loadingrespuesta  && 
               <div className="alert alert-warning mt-3">
