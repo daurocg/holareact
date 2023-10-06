@@ -178,7 +178,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
                 {/* <button className="btn btn-warning m-2" onClick={helpresp} disabled={loadingQuestions[currentQuestionIndex] }>Ayuda con respuestas</button> */}
             </div>
             <div className="question-counter">
-              {t('questionsAnsweredCorrectly')} {correctAnswers} / {maxQuestionCount - remainingQuestions}
+              {t('questionsAnswered: Correctly')} {correctAnswers} / {questionData.length - remainingQuestions-correctAnswers} {t('  Fail')}
             </div>
 
       <div className={helpPanelVisible ? "col-md-8" : "col-md-12"}>
