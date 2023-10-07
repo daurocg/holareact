@@ -115,8 +115,15 @@ function RenderSQL({ sql, onSQLChange }) {
       value={localSQL}
       onChange={handleLocalChange}
       onBlur={handleBlur}
+      style={{
+        overflowX: 'hidden',
+        whiteSpace: 'pre-wrap',
+        fontSize: '10px'  // Ajusta el tamaño del texto aquí
+      }}
     />
-  );
+);
+
+
 }
 
 
@@ -193,7 +200,7 @@ function formatSQL(sqlString) {
           }
 
 {responseMessage && 
-  <div className="alert alert-info mt-3">
+  <div className="alert alert-info mt-3 no-horizontal-scroll">
     <RenderSQL sql={editableSQL} onSQLChange={setEditableSQL} />
   </div>
 }
