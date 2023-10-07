@@ -37,8 +37,9 @@ function AddQuestionScreen({ reset }) {
       const formattedSQL = formatSQL(editableSQL);
       
       // const url = `https://quizzfuntionscertifications.azurewebsites.net/api/insertdb_preguntas_resp?respuesta=dauro`;
+      const url = 'https://quizzfuntionscertifications.azurewebsites.net/api/insertdb_preguntas_resp';
   
-       const response =    await      axios.post('/api/insertdb_preguntas_resp', { respuesta: formattedSQL });
+       const response =    await      axios.post(url, { respuesta: formattedSQL });
 
        alert( response.data.status);
       // const response = await axios.post('https://quizzfuntionscertifications.azurewebsites.net/api/insertdb_preguntas_resp', {
@@ -66,7 +67,7 @@ function AddQuestionScreen({ reset }) {
       setError(null);
       
       const finalModule = useNewModuleInput ? newModule : moduleSelected;
-      const url = `/api/GetSqlPregunta?modulo=${finalModule}&lenguaje=${language}&texto=${questionText}`;
+      const url = `https://quizzfuntionscertifications.azurewebsites.net/api/GetSqlPregunta?modulo=${finalModule}&lenguaje=${language}&texto=${questionText}`;
   
       const response = await axios.post(url);
       // const response = await axios.post('https://quizzfuntionscertifications.azurewebsites.net/api/GetSqlPregunta?', {
