@@ -81,7 +81,7 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
       setLoading(true);
       setloadingrespuesta(true);
       try {
-        const response = await axios(`https://quizzfuntionscertifications.azurewebsites.net/api/getcorrecion_pregunta?id_pregunta=${question.pregunta[0].id_pregunta}&id_respuesta=${answerId}&language=${IAlanguage}`)
+        const response = await axios(`https://quizzfuntionscertifications.azurewebsites.net/api/getcorrecion_pregunta?id_pregunta=${question.pregunta[0].id_pregunta}&id_respuesta=${answerId}&language=${IAlanguage}&id_force=NO`)
         setCorrections(prevState => ({ ...prevState, [currentQuestionIndex]: response.data.respuesta }));
         setErrorMessage(null);  // Limpiar el mensaje de error si la llamada a la API fue exitosa
       } catch (error) {
@@ -140,7 +140,8 @@ function QuestionScreen({ questionData, fetchQuestions, maxQuestionCount, reset 
           params: {
             id_pregunta: question.pregunta[0].id_pregunta,
             id_respuesta: answerId,
-            language: IAlanguage
+            language: IAlanguage,
+            id_force: 'YES'
           }
         });
   
